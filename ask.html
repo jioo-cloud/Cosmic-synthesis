@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YATHA PINDE TATHA BRAHMANDE — Ask a Question</title>
+    <style>
+        /* DESIGN SYSTEM VARIABLES (MATCHED TO MAIN SYSTEM) */
+        :root {
+            --bg-deep: #06080c;
+            --card-bg: rgba(11, 17, 26, 0.85);
+            --accent-gold: #d4af37;
+            --accent-cyan: #00f3ff;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 243, 255, 0.25);
+            --input-bg: rgba(6, 8, 12, 0.7);
+        }
+
+        /* RESET & BASE MATRIX */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* DEEP SPACE BACKGROUND CANVAS */
+        .cosmic-nebula {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(157, 78, 221, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, rgba(0, 243, 255, 0.05) 0%, transparent 45%);
+            z-index: -2;
+        }
+
+        /* CUSTOM CSS STARFIELD PARTICLE SYSTEM */
+        .starfield-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: cosmic-fade infinite ease-in-out;
+        }
+
+        .star.s1 { width: 1px; height: 1px; animation-duration: 4s; }
+        .star.s2 { width: 2px; height: 2px; animation-duration: 6s; background-color: var(--accent-cyan); }
+        .star.s3 { width: 3px; height: 3px; animation-duration: 8s; background-color: var(--accent-gold); }
+
+        @keyframes cosmic-fade {
+            0%, 100% { opacity: 0.1; transform: scale(0.8); }
+            50% { opacity: 0.9; transform: scale(1.2); }
+        }
+
+        /* HEADER MATRIX */
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            letter-spacing: 4px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            font-style: italic;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+        }
+
+        .nav-back-btn {
+            display: inline-block;
+            background: rgba(6, 8, 12, 0.6);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-back-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-deep);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+        }
+
+        /* STRUCTURE CONTAINER */
+        .main-container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 0 20px 120px;
+        }
+
+        /* FORM COMPONENT ARCHITECTURE */
+        .form-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+            backdrop-filter: blur(10px);
+            transition: border-color 0.4s ease;
+        }
+
+        .form-card:hover {
+            border-color: var(--border-glow);
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 14px;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+            background-color: rgba(6, 8, 12, 0.9);
+        }
+
+        select option {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: transparent;
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-gold);
+            color: var(--bg-deep);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+        }
+
+        /* REPOSITORY PROTOCOL FOOTER */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            background: rgba(4, 6, 9, 0.4);
+            backdrop-filter: blur(10px);
+            margin-top: 60px;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- DEEP SPACE SYSTEM STACK -->
+    <div class="cosmic-nebula"></div>
+    <div class="starfield-container">
+        <div class="star s1" style="top: 15%; left: 10%;"></div>
+        <div class="star s2" style="top: 35%; left: 80%;"></div>
+        <div class="star s3" style="top: 50%; left: 18%;"></div>
+        <div class="star s1" style="top: 72%; left: 85%;"></div>
+        <div class="star s2" style="top: 88%; left: 15%;"></div>
+        <div class="star s3" style="top: 22%; left: 50%;"></div>
+    </div>
+
+    <header>
+        <h1>INTERROGATE THE MATRIX</h1>
+        <div class="subtitle">Submit anomalies or structural paradoxes to the Synthesis framework</div>
+        <a href="brhamande.html" class="nav-back-btn">← Return to Manifesto</a>
+    </header>
+
+    <div class="main-container">
+
+        <!-- INTERACTION FORM CARD -->
+        <!-- Replace "your_formspree_id" with your actual Formspree ID when you sign up at formspree.io -->
+        <div class="form-card">
+            <form action="https://formspree.io/f/mvzjqbvw" method="POST">
+                
+                <div class="form-group">
+                    <label for="name">Observer Identity / Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your designation..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Digital Coordinates / Email</label>
+                    <input type="email" id="email" name="_replyto" placeholder="Enter your email to receive a system response..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Manifesto Vector Category</label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled selected>Select system vector...</option>
+                        <option value="Physics">Quantum & Relativistic Physics</option>
+                        <option value="Biology">Macro-Biological & Cellular Systems</option>
+                        <option value="Cosmology">Puranic Map & Multiverse Scaling</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Structural Objection / Question</label>
+                    <textarea id="message" name="message" placeholder="Detail the structural paradox or equation anomaly here..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Transmit Query to Grid</button>
+            </form>
+        </div>
+
+    </div> <!-- End of Main Container -->
+
+        <!-- REPOSITORY PROTOCOL FOOTER (ASK PAGE SPECIFIC) -->
+    <footer>
+    <!-- 1. LIVE PRODUCTION TRANSLATION CONTAINER POSITIONING -->
+    <!-- You can drop this anywhere in your footer layout -->
+    <div style="text-align: center; margin: 30px 0;">
+        <div id="google_translate_element"></div>
+    </div>
+
+    <!-- 2. GOOGLE TRANSLATE PRODUCTION ENGINE CORE SCRIPT -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'hi', // Locks the menu down strictly to English to Hindi
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://google.com"></script>
+
+    <!-- 3. PREMIUM DEEP-SPACE THEME OVERRIDES (FORCES DARK MODE) -->
+    <style>
+        /* Forces the white Google button to adapt to your dark glass cards */
+        .goog-te-gadget-simple {
+            background-color: rgba(11, 17, 26, 0.85) !important;
+            border: 1px solid var(--accent-gold) !important;
+            padding: 10px 24px !important;
+            border-radius: 50px !important;
+            display: inline-block !important;
+            font-family: inherit !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
+        }
+        .goog-te-gadget-simple:hover {
+            border-color: var(--accent-cyan) !important;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+        /* Forces the inner menu link text to display in crisp theme font tracking */
+        .goog-te-gadget-simple span, 
+        .goog-te-menu-value span,
+        .goog-te-menu-value:link,
+        .goog-te-menu-value:visited {
+            color: var(--text-main) !important;
+            font-size: 0.85rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.5px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+        }
+        /* Completely strips out the ugly, distracting default Google brand icon logo */
+        .goog-te-gadget-icon {
+            display: none !important;
+        }
+        /* Destroys the annoying white top horizontal iframe banner bar Google tries to push onto the viewport */
+        .skiptranslate, .goog-te-banner-frame, #goog-gt-tt {
+            display: none !important;
+        }
+        body {
+            top: 0px !important;
+        }
+    </style>
+
+        <div style="margin-bottom: 24px;">
+            <a href="brhamande.html" style="color: var(--accent-cyan); text-decoration: none; font-weight: 700; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 15px;">
+                ✦ Return to Manifesto
+            </a>
+            <span style="color: rgba(255,255,255,0.15);">|</span>
+            <a href="faq.html" style="color: var(--accent-gold); text-decoration: none; font-weight: 700; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 15px;">
+                ✦ View FAQ Matrix
+            </a>
+        </div>
+
+        <p>&copy; 2026 — ARHAM DAVE, ORIGINAL DISCOVERER. ALL RIGHTS RESERVED.</p>
+        <p style="margin-top: 8px; font-size: 0.75rem; color: var(--accent-cyan); letter-spacing: 2px; text-transform: uppercase;">"YATHA PINDE TATHA BRAHMANDE" COSMIC SYNTHESIS MODEL PROTOCOL [J].</p>
+    </footer>
+
+
+</body>
+</html>
